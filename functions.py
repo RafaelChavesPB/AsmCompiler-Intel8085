@@ -81,7 +81,7 @@ def hexToBinary(num: str) -> str:
 def verifyNumber(num: str, line: int):
     data = ''
     if isHex(num):
-        data = octalToBinary(isOctal(num))
+        data = octalToBinary(isHex(num))
     elif isOctal(num):
         data = octalToBinary(isOctal(num))
     elif isBinary(line):
