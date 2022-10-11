@@ -1,3 +1,5 @@
+
+
 command_size = {
     'aci': 2,
     'adc': 1,
@@ -43,6 +45,7 @@ command_size = {
     'mov': 1,
     'mvi': 2,
     'not': 1,
+    'nop': 1,
     'ora': 1,
     'ori': 2,
     'out': 2,
@@ -78,3 +81,20 @@ command_size = {
     'xri': 2,
     'xthl': 1,
 }
+
+patterns = [
+    r'^\s*(?P<label>\w+):\s*(?P<cmd>\w+)\s+(?P<arg1>\w+)\s*,\s*(?P<arg2>\w+)\s*(?:;[\w\s\W]*)?$',
+    r'^\s*(?P<label>\w+):\s*(?P<cmd>\w+)\s+(?P<arg1>\w+)\s*(?:;[\w\s\W]*)?$',
+    r'^\s*(?P<label>\w+):\s*(?P<cmd>\w+)\s+(?:;[\w\s\W]*)?$',
+    r'^\s*(?P<cmd>\w+)\s+(?P<arg1>\w+)\s*,\s*(?P<arg2>\w+)\s*(?:;[\w\s\W]*)?$',
+    r'^\s*(?P<cmd>\w+)\s+(?P<arg1>\w+)\s*(?:;[\w\s\W]*)?$',
+    r'^\s*(?P<cmd>\w+)\s+(?:;[\w\s\W]*)?$',
+    r'^\s*(?:;[\w\s\W]*)?$'
+]
+
+registers = {'a': '111', 'b': '000', 'c': '001',
+             'd': '010', 'e': '011', 'h': '100', 'l': '101', 'm': '110'}
+
+double_registers = {'b': '000', 'd': '010', 'h':'100'}
+
+
