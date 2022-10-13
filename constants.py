@@ -1,6 +1,9 @@
 
+directives = {
+    'db', 'ds', 'equ', 'org'
+}
 
-command_size = {
+commands = {
     'aci': 2,
     'adc': 1,
     'add': 1,
@@ -83,11 +86,11 @@ command_size = {
 }
 
 patterns = [
-    r'^\s*(?P<label>\w+):\s*(?P<cmd>db|DB)\s+(?P<arg1>(?:\s*\w+\s*,)+(?:\s*\w+)+)\s*(?:;[\w\s\W]*)?$',
-    r'^\s*(?P<label>\w+)\s*(?P<cmd>equ|EQU)\s+(?P<arg1>\w+)\s*(?:;[\w\s\W]*)?$',
-    r'^\s*(?P<label>\w+):\s*(?P<cmd>\w+)\s+(?P<arg1>\w+)\s*,\s*(?P<arg2>\w+)\s*(?:;[\w\s\W]*)?$',
-    r'^\s*(?P<label>\w+):\s*(?P<cmd>\w+)\s+(?P<arg1>\w+)\s*(?:;[\w\s\W]*)?$',
-    r'^\s*(?P<label>\w+):\s*(?P<cmd>\w+)\s+(?:;[\w\s\W]*)?$',
+    r'^\s*(?P<label>[a-z]\w*):\s*(?P<cmd>db)\s+(?P<arg1>(?:\s*\w+\s*,)+(?:\s*\w+)+)\s*(?:;[\w\s\W]*)?$',
+    r'^\s*(?P<label>[a-z]\w*)\s*(?P<cmd>equ)\s+(?P<arg1>\w+)\s*(?:;[\w\s\W]*)?$',
+    r'^\s*(?P<label>[a-z]\w*):\s*(?P<cmd>\w+)\s+(?P<arg1>\w+)\s*,\s*(?P<arg2>\w+)\s*(?:;[\w\s\W]*)?$',
+    r'^\s*(?P<label>[a-z]\w*):\s*(?P<cmd>\w+)\s+(?P<arg1>\w+)\s*(?:;[\w\s\W]*)?$',
+    r'^\s*(?P<label>[a-z]\w*):\s*(?P<cmd>\w+)\s+(?:;[\w\s\W]*)?$',
     r'^\s*(?P<cmd>\w+)\s+(?P<arg1>\w+)\s*,\s*(?P<arg2>\w+)\s*(?:;[\w\s\W]*)?$',
     r'^\s*(?P<cmd>\w+)\s+(?P<arg1>\w+)\s*(?:;[\w\s\W]*)?$',
     r'^\s*(?P<cmd>\w+)\s+(?:;[\w\s\W]*)?$',
@@ -97,6 +100,6 @@ patterns = [
 registers = {'a': '111', 'b': '000', 'c': '001',
              'd': '010', 'e': '011', 'h': '100', 'l': '101', 'm': '110'}
 
-double_registers = {'b': '000', 'd': '010', 'h':'100'}
+double_registers = {'b': '00', 'd': '01', 'h':'10', 'sp':'11'}
 
 

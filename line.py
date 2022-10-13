@@ -8,9 +8,9 @@ class Line:
         self.address = 0
 
     def __str__(self):
-        line = f"{self.address} - "
-        line += self.label + ": " if self.label else ""
-        line += self.cmd + " " if self.cmd else ""
-        line += self.arg1 + " " if self.arg1 else ""
-        line += self.arg2 if self.arg2 else ""
+        line = f"{self.address}"
+        line += " " + self.label + ": " if self.label else ""
+        line += " " + self.cmd + " " if self.cmd else ""
+        line += " " + str(self.arg1) + " " if self.arg1 else ""
+        line += " " + str(self.arg2) if self.arg2 else ""
         return line + '\n'

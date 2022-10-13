@@ -1,9 +1,0 @@
-^\s*(\w+:)\s*(\w+)\s*(\w+)\s*,\s*(\w+)\s*(?:;[\w\s\W]*)?$ - rotulo,comando,op1,op2,comentario
-^\s*(\w+:)\s*(\w+)\s*(\w+)\s*(?:;[\w\s\W]*)?$ - rotulo,comando,op1,comentario
-^\s*(\w+:)\s*(\w+)\s*(?:;[\w\s\W]*)?$ - rotulo,comando,comentario
-^\s*(\w+:)\s*(\w+)\s*(?:;[\w\s\W]*)?$ - rotulo
-^\s*(\w+)\s*(\w+)\s*,\s*(\w+)\s*(?:;[\w\s\W]*)?$ - comando,op1,op2,comentario
-^\s*(\w+)\s*(\w+)\s*(?:;[\w\s\W]*)?$ - comando,op1,comentario
-^\s*(\w+)\s*(?:;[\w\s\W]*)?$ - comando,comentario
-^\s*(?:;[\w\s\W]*)?$ - comentario
-
