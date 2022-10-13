@@ -104,8 +104,7 @@ class Compiler:
             curr_address = line.address
             top_address = max(curr_address + len(cmd_bytes), top_address)
             for it in range(len(cmd_bytes)):
-                self.binary_code[curr_address + it] = [cmd_bytes[it],
-                                                       str(line.line) + ' - ' + line.raw_line.strip()]
+                self.binary_code[curr_address + it] = [cmd_bytes[it], line]
 
         for it in range(top_address):
             if it not in self.binary_code:
@@ -113,19 +112,18 @@ class Compiler:
 
     def saveBinaryCode(self):
         with open(self.filename+'.txt', 'w') as file:
-            file.write('Memory - Opcode - Line - Instruction Souce \n')
+            file.write(f'{"Memory":10} {"Opcode":10} {"Line":6}  {"Instruction Souce":30} \n')
             for it in range(len(self.binary_code)):
                 file.write(
-                    f'{decimalToHex(it)}: {self.binary_code[it][0]} - {self.binary_code[it][1]}\n')
+                    f'{decimalToHex(it):10} {self.binary_code[it][0]:10} {self.binary_code[it][1].line:4}    {self.binary_code[it][1].raw_line:30}\n')
         with open(self.filename+'.bin', 'w') as file:
             for it in range(len(self.binary_code)):
-                file.write(self.binary_code[it][0]+'\n')
+                file.write(self.binary_code[it][0])
 
     def compile(self):
         try:
             self.getLines()
             self.identifyLabels()
-            print(*self.lines)
             self.replacingLabels()
             self.tranlateToBinary()
             self.saveBinaryCode()
