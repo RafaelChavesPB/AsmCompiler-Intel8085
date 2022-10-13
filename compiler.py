@@ -2,6 +2,7 @@
 
 import re
 from functions import *
+from translaters import translater
 from line import Line
 import constants
 
@@ -49,8 +50,9 @@ class Compiler:
                     self.labels[line.label] = curr_address
                     curr_address += verifyNumber(line.arg1, line.line)
                 elif line.cmd == 'equ':
-                    if line.arg1 in constants.commands or line.arg1 in constants.directives or line.arg1 in constants.registers:
-                        raise SyntaxError(f'Label using protect words at line {line.line}')
+                    if line.label in constants.commands or line.label in constants.directives or line.label in constants.registers:
+                        raise SyntaxError(
+                            f'Label using protect words at line {line.line}')
                     self.equ[line.label] = line.arg1
                 elif line.cmd == 'org':
                     curr_address = verifyNumber(line.arg1, line.line)
@@ -82,13 +84,19 @@ class Compiler:
                     elif line.arg2 in self.equ:
                         line.arg2 = self.equ[line.arg2]
 
+    def tranlateToBinary(self):
+        for line in self.lines:
+            if line.cmd in constants.commands:
+                print(translater[line.cmd](line))
+
     def compile(self):
         self.getLines()
+        print(*self.lines)
         self.identifyLabels()
         print(*self.lines)
-        print(self.labels)
         self.replacingLabels()
         print(*self.lines)
+        self.tranlateToBinary()
         try:
             pass
         except FileNotFoundError:
