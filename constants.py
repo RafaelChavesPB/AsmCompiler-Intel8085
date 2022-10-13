@@ -92,6 +92,7 @@ patterns = [
     r'^\s*(?P<label>[a-z]\w*):\s*(?P<cmd>\w+)\s+(?P<arg1>\w+)\s*,\s*(?P<arg2>\w+)\s*(?:;[\w\s\W]*)?$',
     r'^\s*(?P<label>[a-z]\w*):\s*(?P<cmd>\w+)\s+(?P<arg1>\w+)\s*(?:;[\w\s\W]*)?$',
     r'^\s*(?P<label>[a-z]\w*):\s*(?P<cmd>\w+)\s*(?:;[\w\s\W]*)?$',
+    r'^\s*(?P<label>[a-z]\w*):\s*(?:;[\w\s\W]*)?$',
     r'^\s*(?P<cmd>\w+)\s+(?P<arg1>\w+)\s*,\s*(?P<arg2>\w+)\s*(?:;[\w\s\W]*)?$',
     r'^\s*(?P<cmd>\w+)\s+(?P<arg1>\w+)\s*(?:;[\w\s\W]*)?$',
     r'^\s*(?P<cmd>\w+)\s*(?:;[\w\s\W]*)?$',

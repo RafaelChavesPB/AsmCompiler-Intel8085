@@ -89,12 +89,14 @@ class Compiler:
     def tranlateToBinary(self):
         top_address = 0
         for line in self.lines:
-            if line.cmd in constants.commands or line.cmd in constants.directives:
+            if line.cmd:
                 cmd_bytes = translater[line.cmd](line)
-                curr_address = line.address 
-                top_address = max(curr_address + len(cmd_bytes), top_address)
-                for it in range(len(cmd_bytes)):
-                    self.binary_code[curr_address + it] = [cmd_bytes[it], str(line.line) + ' ' + line.raw_line]
+            else:
+                cmd_bytes = ['00000000']
+            curr_address = line.address 
+            top_address = max(curr_address + len(cmd_bytes), top_address)
+            for it in range(len(cmd_bytes)):
+                self.binary_code[curr_address + it] = [cmd_bytes[it], str(line.line) + ' ' + line.raw_line]
 
         for it in range(top_address + 1):
             if it not in self.binary_code:

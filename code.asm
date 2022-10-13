@@ -3,7 +3,7 @@ jmp start
 data: db 0ffh, 0ffh, 0ffh
 array: ds 3
 ;code
-start: org 10
+start:
 	mvi b, 3
 	mov a, b
 	adi 0
