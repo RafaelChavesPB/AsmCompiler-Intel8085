@@ -1,5 +1,0 @@
-0x00: 00000000 - 1 label: db 00h,0ffh, 0ffh,0ffh
-0x01: 11111111 - 1 label: db 00h,0ffh, 0ffh,0ffh
-0x02: 11111111 - 1 label: db 00h,0ffh, 0ffh,0ffh
-0x03: 11111111 - 1 label: db 00h,0ffh, 0ffh,0ffh
-0x04: 00000000 - None

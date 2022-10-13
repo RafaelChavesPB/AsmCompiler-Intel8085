@@ -61,16 +61,17 @@ class Compiler:
                     line.address = curr_address
                     if line.label:
                         self.labels[line.label] = curr_address
-                    curr_address += 1
-
+                        curr_address += 1
                 else:
                     raise SyntaxError(
                         f'Invalid command at line {line.line}')
-
             else:
                 if line.label:
                     self.labels[line.label] = curr_address
                     curr_address += 1
+            
+            if curr_address >= 256*256:
+                raise MemoryError(f'Segmentation fault (core dumped)! Accessing inadequated memory position at line {line.line}.')
 
     def replacingLabels(self):
         for line in self.lines:
@@ -85,6 +86,12 @@ class Compiler:
                         line.arg2 = self.labels[line.arg2]
                     elif line.arg2 in self.equ:
                         line.arg2 = self.equ[line.arg2]
+            elif line.cmd == 'ds' or line.cmd == 'org':
+                if line.arg1 in self.equ:
+                    line.arg1 = self.equ[line.arg1]
+            elif line.cmd == 'db':
+                args = [ self.equ[arg.strip()] if arg.strip() in self.equ else arg for arg in line.arg1.split(',')]
+                line.arg1 = ','.join(args)
 
     def tranlateToBinary(self):
         top_address = 0
@@ -96,27 +103,28 @@ class Compiler:
             curr_address = line.address 
             top_address = max(curr_address + len(cmd_bytes), top_address)
             for it in range(len(cmd_bytes)):
-                self.binary_code[curr_address + it] = [cmd_bytes[it], str(line.line) + ' ' + line.raw_line]
+                self.binary_code[curr_address + it] = [cmd_bytes[it], str(line.line) + ' - ' + line.raw_line.strip()]
 
-        for it in range(top_address + 1):
+        for it in range(top_address):
             if it not in self.binary_code:
                 self.binary_code[it] = ['00000000', 'None']
 
     def saveBinaryCode(self):
-        with open(self.filename+'.bin','w') as file:
-            for it in self.binary_code:
+        with open(self.filename+'.txt','w') as file:
+            file.write('Memory - Opcode - Line - Instruction Souce \n')
+            for it in range(len(self.binary_code)):
                 file.write(f'{decimalToHex(it)}: {self.binary_code[it][0]} - {self.binary_code[it][1]}\n')
-
+        with open(self.filename+'.bin','w') as file:
+            for it in range(len(self.binary_code)):
+                file.write(self.binary_code[it][0]+'\n')
     def compile(self):
-        self.getLines()
-        print(*self.lines)
-        self.identifyLabels()
-        print(*self.lines)
-        self.replacingLabels()
-        print(*self.lines)
-        self.tranlateToBinary()
-        self.saveBinaryCode()
         try:
+            self.getLines()
+            self.identifyLabels()
+            print(*self.lines)
+            self.replacingLabels()
+            self.tranlateToBinary()
+            self.saveBinaryCode()
             pass
         except FileNotFoundError:
             print(f'File "{self.filename}.asm" not found.')

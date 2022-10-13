@@ -24,6 +24,8 @@ def isOctal(num: str) -> str:
 
 
 def isDecimal(num: str) -> int:
+    if isinstance(num, int):
+        return num
     match = re.match(r'^\s*([0-9]+)d?\s*$', num)
     if match:
         return int(match.group(1))
@@ -84,14 +86,14 @@ def hexToBinary(num: str) -> str:
 
 def verifyNumber(num: str, line: int):
     data = ''
-    if isHex(num) is not None:
+    if isDecimal(num) is not None:
+        data = isDecimal(num)
+    elif isHex(num) is not None:
         data = hexToDecimal(isHex(num))
     elif isOctal(num) is not None:
         data = octalToBinary(isOctal(num))
     elif isBinary(num) is not None:
         data = binaryToDecimal(isBinary(num))
-    elif isDecimal(num) is not None:
-        data = isDecimal(num)
     else:
         raise SyntaxError(f'Number not valid at line {line} -> {num}')
     return data

@@ -1,16 +1,19 @@
-jmp start
-;data
-data: db 0ffh, 0ffh, 0ffh
-array: ds 3
-;code
-start:
-	mvi b, 3
-	mov a, b
-	adi 0
-	jpo odd
-	ani 127
-	jmp fim
-odd: 	xri 128
-fim:	mov b,a
-hlt
+JMP START
+VALOR:     DB 10
+NBITS:    DB 0
+START:     LDA VALOR    
+        MOV B,A        
+        MVI C,0        
+        MVI D,1    
+LOOP:    MOV A,D
+        ANA B
+        JZ PULA
+        INR C
+PULA:    MOV A,D
+        RAL
+        MOV D,A
+JNC LOOP
+        MOV A,C
+        STA NBITS
+        HLT
 

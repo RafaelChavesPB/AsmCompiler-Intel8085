@@ -6,7 +6,7 @@ import constants
 def opcode_(opcode: str, line: Line):
     if line.arg1 is not None:
         raise SyntaxError(f'Invalid syntax at line {line.line}.')
-    return opcode
+    return [opcode]
 
 
 def opcode_data(opcode: str, line: Line):
@@ -51,7 +51,7 @@ def opcode_double_data(opcode: str, line: Line):
     data = decimalToBinary(verifyNumber(line.arg1, line.line)).zfill(16)
     if len(data) > 16:
         raise OverflowError(f'Overflow number at line {line.line}')
-    return [opcode, data[0:8], data[8:16]]
+    return [opcode, data[8:16], data[0:8]]
 
 
 def opcode_r(opcode1: str, opcode2: str, line: Line):
@@ -83,7 +83,7 @@ def opcode_rp_double_data(opcode1: str, opcode2: str, line: Line):
     if line.arg1 not in constants.double_registers:
         raise SyntaxError(f'Invalid syntax at line {line.line}.')
 
-    return [opcode1 + constants.double_registers[line.arg1] + opcode2, data[0:8], data[8:16]]
+    return [opcode1 + constants.double_registers[line.arg1] + opcode2, data[8:16], data[0:8]]
 
 
 def opcode_sss(opcode: str, line: Line):
@@ -95,7 +95,6 @@ def opcode_sss(opcode: str, line: Line):
     return [opcode + constants.registers[line.arg1]]
 
 def db_translater(line: Line):
-    print(line.arg1.split(','))
     args = [decimalToBinary(verifyNumber(num, line.line)).zfill(8) for num in line.arg1.split(',')]
     values = []
     for arg in args:
@@ -105,7 +104,7 @@ def db_translater(line: Line):
     return values
 
 def ds_translater(line: Line):
-    return ['00000000' for it in range(verifyNumber(line.arg1))]
+    return ['00000000' for it in range(verifyNumber(line.arg1, line.line))]
 
 translater = {
     'aci': lambda line: opcode_data('11001110', line),
