@@ -39,12 +39,14 @@ def octalToDecimal(num: str) -> int:
         dec += int(num[i])*8**i
     return dec
 
+
 def binaryToDecimal(num: str):
     dec = 0
     num = num[::-1]
     for i in range(len(num)):
         dec += int(num[i])*2**i
     return dec
+
 
 def hexToDecimal(num: str) -> int:
     table = {'a': 10, 'b': 11, 'c': 12, 'd': 13, 'e': 14, 'f': 15}
@@ -54,23 +56,26 @@ def hexToDecimal(num: str) -> int:
         dec += (table[num[i]] if num[i] in table else int(num[i]))*16**i
     return dec
 
+
 def decimalToBinary(num: int):
     bin = ''
     while num > 0:
-        bin += ('1' if num & 1 else '0') 
+        bin += ('1' if num & 1 else '0')
         num = num >> 1
     return bin[::-1] if bin else '0'
+
 
 def decimalToHex(num: int) -> str:
     table = {10: 'a', 11: 'b', 12: 'c', 13: 'd', 14: 'e', 15: 'f'}
     hex = ''
     while num > 0:
         res = num % 16
-        hex += (table[res] if res in table else str(res)) 
+        hex += (table[res] if res in table else str(res))
         num = num >> 4
     hex = hex[::-1]
-    hex = hex.zfill(len(hex)+len(hex)%2)
-    return '0x'+ (hex.upper() if hex else '00')
+    hex = hex.zfill(len(hex)+len(hex) % 2)
+    return '0x' + (hex.upper() if hex else '00')
+
 
 def octalToBinary(num: str) -> str:
     dec = octalToDecimal(num)

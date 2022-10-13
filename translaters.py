@@ -94,8 +94,10 @@ def opcode_sss(opcode: str, line: Line):
         raise SyntaxError(f'Invalid syntax at line {line.line}.')
     return [opcode + constants.registers[line.arg1]]
 
+
 def db_translater(line: Line):
-    args = [decimalToBinary(verifyNumber(num, line.line)).zfill(8) for num in line.arg1.split(',')]
+    args = [decimalToBinary(verifyNumber(num, line.line)).zfill(8)
+            for num in line.arg1.split(',')]
     values = []
     for arg in args:
         if len(arg) > 8:
@@ -103,8 +105,10 @@ def db_translater(line: Line):
         values.append(arg)
     return values
 
+
 def ds_translater(line: Line):
     return ['00000000' for it in range(verifyNumber(line.arg1, line.line))]
+
 
 translater = {
     'aci': lambda line: opcode_data('11001110', line),
@@ -174,13 +178,13 @@ translater = {
     'rst': lambda line: opcode_ddd('11', '111', line),
     'rz': lambda line: opcode_('11001000', line),
     'sbb': lambda line: opcode_sss('10011', line),
-    'sbi':  lambda line: opcode_data('11011110', line),
+    'sbi': lambda line: opcode_data('11011110', line),
     'shld': lambda line: opcode_double_data('00100010', line),
     'sim': lambda line: opcode_('00110000', line),
     'sphl': lambda line: opcode_('11111001', line),
     'sta': lambda line: opcode_double_data('00110010', line),
-    'stax': lambda line: opcode_r('000','0010', line),
-    'stc':  lambda line: opcode_('00110111', line),
+    'stax': lambda line: opcode_r('000', '0010', line),
+    'stc': lambda line: opcode_('00110111', line),
     'sub': lambda line: opcode_sss('10010', line),
     'sui': lambda line: opcode_data('11010110', line),
     'xchg': lambda line: opcode_('11101011', line),
