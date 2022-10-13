@@ -3,28 +3,28 @@ from constants import *
 
 
 def isHex(num: str) -> str:
-    match = re.match(r'^(0[0-9a-f]+)h$', num)
+    match = re.match(r'^\s*(0[0-9a-f]*)h\s*$', num)
     if match:
         return match.group(1)
     return None
 
 
 def isBinary(num: str) -> str:
-    match = re.match(r'^([0-1]+)b$', num)
+    match = re.match(r'^\s*([0-1]+)b\s*$', num)
     if match:
         return match.group(1)
     return None
 
 
 def isOctal(num: str) -> str:
-    match = re.match(r'^([0-7]+)[q|o]$', num)
+    match = re.match(r'^\s*([0-7]+)[q|o]\s*$', num)
     if match:
         return match.group(1)
     return None
 
 
 def isDecimal(num: str) -> int:
-    match = re.match(r'^([0-9]+)d?$', num)
+    match = re.match(r'^\s*([0-9]+)d?\s*$', num)
     if match:
         return int(match.group(1))
     return None

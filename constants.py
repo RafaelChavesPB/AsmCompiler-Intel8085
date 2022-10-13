@@ -87,7 +87,7 @@ commands = {
 }
 
 patterns = [
-    r'^\s*(?P<label>[a-z]\w*):\s*(?P<cmd>db)\s+(?P<arg1>(?:\s*\w+\s*,)+(?:\s*\w+)+)\s*(?:;[\w\s\W]*)?$',
+    r'^\s*(?P<label>[a-z]\w*):\s*(?P<cmd>db)\s+(?P<arg1>(?:\s*\w+\s*,\s*)+(?:\s*\w+)+)\s*(?:;[\w\s\W]*)?$',
     r'^\s*(?P<label>[a-z]\w*)\s*(?P<cmd>equ)\s+(?P<arg1>\w+)\s*(?:;[\w\s\W]*)?$',
     r'^\s*(?P<label>[a-z]\w*):\s*(?P<cmd>\w+)\s+(?P<arg1>\w+)\s*,\s*(?P<arg2>\w+)\s*(?:;[\w\s\W]*)?$',
     r'^\s*(?P<label>[a-z]\w*):\s*(?P<cmd>\w+)\s+(?P<arg1>\w+)\s*(?:;[\w\s\W]*)?$',

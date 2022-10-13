@@ -1,5 +1,6 @@
 class Line:
-    def __init__(self, **kwarg):
+    def __init__(self, raw_line = '', **kwarg):
+        self.raw_line = raw_line
         self.line = kwarg.get('line')
         self.label = kwarg.get('label')
         self.cmd = kwarg.get('cmd')

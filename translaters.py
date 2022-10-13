@@ -94,6 +94,18 @@ def opcode_sss(opcode: str, line: Line):
         raise SyntaxError(f'Invalid syntax at line {line.line}.')
     return [opcode + constants.registers[line.arg1]]
 
+def db_translater(line: Line):
+    print(line.arg1.split(','))
+    args = [decimalToBinary(verifyNumber(num, line.line)).zfill(8) for num in line.arg1.split(',')]
+    values = []
+    for arg in args:
+        if len(arg) > 8:
+            raise OverflowError(f'Overflow number at line {line.line}')
+        values.append(arg)
+    return values
+
+def ds_translater(line: Line):
+    return ['00000000' for it in range(verifyNumber(line.arg1))]
 
 translater = {
     'aci': lambda line: opcode_data('11001110', line),
@@ -176,4 +188,8 @@ translater = {
     'xra': lambda line: opcode_sss('10101', line),
     'xri': lambda line: opcode_data('11101110', line),
     'xthl': lambda line: opcode_('11100011', line),
+    'db': lambda line: db_translater(line),
+    'ds': lambda line: ds_translater(line),
+    'org': lambda line: ['00000000'] if line.label else [],
+    'equ': lambda line: []
 }
