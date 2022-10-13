@@ -83,13 +83,15 @@ command_size = {
 }
 
 patterns = [
+    r'^\s*(?P<label>\w+):\s*(?P<cmd>db|DB)\s+(?P<arg1>(?:\s*\w+\s*,)+(?:\s*\w+)+)\s*(?:;[\w\s\W]*)?$',
+    r'^\s*(?P<label>\w+)\s*(?P<cmd>equ|EQU)\s+(?P<arg1>\w+)\s*(?:;[\w\s\W]*)?$',
     r'^\s*(?P<label>\w+):\s*(?P<cmd>\w+)\s+(?P<arg1>\w+)\s*,\s*(?P<arg2>\w+)\s*(?:;[\w\s\W]*)?$',
     r'^\s*(?P<label>\w+):\s*(?P<cmd>\w+)\s+(?P<arg1>\w+)\s*(?:;[\w\s\W]*)?$',
     r'^\s*(?P<label>\w+):\s*(?P<cmd>\w+)\s+(?:;[\w\s\W]*)?$',
     r'^\s*(?P<cmd>\w+)\s+(?P<arg1>\w+)\s*,\s*(?P<arg2>\w+)\s*(?:;[\w\s\W]*)?$',
     r'^\s*(?P<cmd>\w+)\s+(?P<arg1>\w+)\s*(?:;[\w\s\W]*)?$',
     r'^\s*(?P<cmd>\w+)\s+(?:;[\w\s\W]*)?$',
-    r'^\s*(?:;[\w\s\W]*)?$'
+    r'^\s*(?:;[\w\s\W]*)?$',
 ]
 
 registers = {'a': '111', 'b': '000', 'c': '001',

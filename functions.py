@@ -26,16 +26,8 @@ def isOctal(num: str) -> str:
 def isDecimal(num: str) -> int:
     match = re.match(r'^([0-9]+)d?$', num)
     if match:
-        return match.group(1)
+        return int(match.group(1))
     return None
-
-
-def decimalToBinary(num: int):
-    bin = ''
-    while num > 0:
-        bin += ('1' if num & 1 else '0') 
-        num = num >> 1
-    return bin[::-1] if bin else '0'
 
 
 def octalToDecimal(num: str) -> int:
@@ -45,6 +37,12 @@ def octalToDecimal(num: str) -> int:
         dec += int(num[i])*8**i
     return dec
 
+def binaryToDecimal(num: str):
+    dec = 0
+    num = num[::-1]
+    for i in range(len(num)):
+        dec += int(num[i])*2**i
+    return dec
 
 def hexToDecimal(num: str) -> int:
     table = {'a': 10, 'b': 11, 'c': 12, 'd': 13, 'e': 14, 'f': 15}
@@ -54,6 +52,12 @@ def hexToDecimal(num: str) -> int:
         dec += (table[num[i]] if num[i] in table else int(num[i]))*16**i
     return dec
 
+def decimalToBinary(num: int):
+    bin = ''
+    while num > 0:
+        bin += ('1' if num & 1 else '0') 
+        num = num >> 1
+    return bin[::-1] if bin else '0'
 
 def decimalToHex(num: int) -> str:
     table = {10: 'a', 11: 'b', 12: 'c', 13: 'd', 14: 'e', 15: 'f'}
@@ -80,14 +84,14 @@ def hexToBinary(num: str) -> str:
 
 def verifyNumber(num: str, line: int):
     data = ''
-    if isHex(num):
-        data = octalToBinary(isHex(num))
-    elif isOctal(num):
+    if isHex(num) is not None:
+        data = hexToDecimal(isHex(num))
+    elif isOctal(num) is not None:
         data = octalToBinary(isOctal(num))
-    elif isBinary(line):
-        data = isBinary(line)
-    elif isDecimal(num):
-        data = decimalToBinary(isDecimal(num))
+    elif isBinary(num) is not None:
+        data = binaryToDecimal(isBinary(num))
+    elif isDecimal(num) is not None:
+        data = isDecimal(num)
     else:
-        raise SyntaxError(f'Number not valid at line {line.line} -> {num}')
+        raise SyntaxError(f'Number not valid at line {line} -> {num}')
     return data
