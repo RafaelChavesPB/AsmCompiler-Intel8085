@@ -118,7 +118,7 @@ class Compiler:
                     f'{decimalToHex(it):10} {self.binary_code[it][0]:10} {self.binary_code[it][1].line:4}    {self.binary_code[it][1].raw_line:30}\n')
         with open(self.filename+'.bin', 'w') as file:
             for it in range(len(self.binary_code)):
-                file.write(self.binary_code[it][0])
+                file.write(self.binary_code[it][0]+'\n')
 
     def compile(self):
         try:
