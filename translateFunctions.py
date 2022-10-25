@@ -1,5 +1,5 @@
 from line import Line
-from functions import *
+from numberHandles import *
 import constants
 
 
@@ -129,7 +129,7 @@ def ds_translater(line: Line):
     return ['00000000' for it in range(verifyNumber(line.arg1, line))]
 
 
-translater = {
+translaterDict = {
     'aci': lambda line: opcode_data('11001110', line),
     'adc': lambda line: opcode_sss('10001', line),
     'add': lambda line: opcode_sss('10000', line),

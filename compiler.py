@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 
 import re
-from functions import *
-from translaters import translater
+from numberHandles import *
+from translateFunctions import translaterDict
 from line import Line
 import constants
 
@@ -106,7 +106,7 @@ class Compiler:
         top_address = 0
         for line in self.lines:
             if line.cmd:
-                cmd_bytes = translater[line.cmd](line)
+                cmd_bytes = translaterDict[line.cmd](line)
             else:
                 cmd_bytes = ['00000000']
             curr_address = line.address
