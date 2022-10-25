@@ -1,15 +1,10 @@
 #!/usr/bin/python3
 
 import re
-from numberHandles import *
-from translateFunctions import translaterDict
-from line import Line
-import constants
-
-# TO DO
-'''
-   ORG
-'''
+from . import constants
+from .numberHandles import *
+from .translateFunctions import translaterDict
+from .line import Line
 
 
 class Compiler:

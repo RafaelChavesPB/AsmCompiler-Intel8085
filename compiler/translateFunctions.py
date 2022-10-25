@@ -1,6 +1,6 @@
-from line import Line
-from numberHandles import *
-import constants
+from .line import Line
+from . import numberHandles as nh
+from . import constants as const
 
 
 def opcode_(opcode: str, line: Line):
@@ -15,7 +15,7 @@ def opcode_data(opcode: str, line: Line):
         raise SyntaxError(
             f'Syntax Error: Invalid syntax at line {line.line} -> "{line.raw_line.strip()}"')
 
-    data = decimalToBinary(verifyNumber(line.arg1, line)).zfill(8)
+    data = nh.decimalToBinary(nh.verifyNumber(line.arg1, line)).zfill(8)
     if len(data) > 8:
         raise SyntaxError(
             f'Syntax Error: Overflow number at line {line.line} -> "{line.raw_line.strip()}')
@@ -27,29 +27,29 @@ def opcode_ddd(opcode1: str, opcode2: str, line: Line):
         raise SyntaxError(
             f'Syntax Error: Invalid syntax at line {line.line} -> "{line.raw_line.strip()}"')
 
-    if line.arg1 not in constants.registers:
+    if line.arg1 not in const.registers:
         raise SyntaxError(
             f'Syntax Error: Invalid syntax at line {line.line} -> "{line.raw_line.strip()}"')
-    return [opcode1 + constants.registers[line.arg1] + opcode2]
+    return [opcode1 + const.registers[line.arg1] + opcode2]
 
 
 def opcode_ddd_data(opcode1: str, opcode2: str, line: Line):
-    data = decimalToBinary(verifyNumber(line.arg2, line)).zfill(8)
+    data = nh.decimalToBinary(nh.verifyNumber(line.arg2, line)).zfill(8)
     if len(data) > 8:
         raise SyntaxError(
             f'Syntax Error: Overflow number at line {line.line} -> "{line.raw_line.strip()}')
 
-    if line.arg1 not in constants.registers:
+    if line.arg1 not in const.registers:
         raise SyntaxError(
             f'Syntax Error: Invalid syntax at line {line.line} -> "{line.raw_line.strip()}"')
-    return [opcode1 + constants.registers[line.arg1] + opcode2, data]
+    return [opcode1 + const.registers[line.arg1] + opcode2, data]
 
 
 def opcode_ddd_sss(opcode1: str, line: Line):
-    if line.arg1 not in constants.registers or line.arg2 not in constants.registers:
+    if line.arg1 not in const.registers or line.arg2 not in const.registers:
         raise SyntaxError(
             f'Syntax Error: Invalid syntax at line {line.line} -> "{line.raw_line.strip()}"')
-    return [opcode1 + constants.registers[line.arg1] + constants.registers[line.arg2]]
+    return [opcode1 + const.registers[line.arg1] + const.registers[line.arg2]]
 
 
 def opcode_double_data(opcode: str, line: Line):
@@ -57,7 +57,7 @@ def opcode_double_data(opcode: str, line: Line):
         raise SyntaxError(
             f'Syntax Error: Invalid syntax at line {line.line} -> "{line.raw_line.strip()}"')
 
-    data = decimalToBinary(verifyNumber(line.arg1, line)).zfill(16)
+    data = nh.decimalToBinary(nh.verifyNumber(line.arg1, line)).zfill(16)
     if len(data) > 16:
         raise SyntaxError(
             f'Syntax Error: Overflow number at line {line.line} -> "{line.raw_line.strip()}')
@@ -81,25 +81,25 @@ def opcode_rp(opcode1: str, opcode2: str, line: Line):
         raise SyntaxError(
             f'Syntax Error: Invalid syntax at line {line.line} -> "{line.raw_line.strip()}"')
 
-    if line.arg1 not in constants.double_registers:
+    if line.arg1 not in const.double_registers:
         raise SyntaxError(
             f'Syntax Error: Invalid syntax at line {line.line} -> "{line.raw_line.strip()}"')
 
-    return [opcode1 + constants.double_registers[line.arg1] + opcode2]
+    return [opcode1 + const.double_registers[line.arg1] + opcode2]
 
 
 def opcode_rp_double_data(opcode1: str, opcode2: str, line: Line):
 
-    data = decimalToBinary(verifyNumber(line.arg2, line)).zfill(16)
+    data = nh.decimalToBinary(nh.verifyNumber(line.arg2, line)).zfill(16)
     if len(data) > 16:
         raise SyntaxError(
             f'Syntax Error: Overflow number at line {line.line} -> "{line.raw_line.strip()}')
 
-    if line.arg1 not in constants.double_registers:
+    if line.arg1 not in const.double_registers:
         raise SyntaxError(
             f'Syntax Error: Invalid syntax at line {line.line} -> "{line.raw_line.strip()}"')
 
-    return [opcode1 + constants.double_registers[line.arg1] + opcode2, data[8:16], data[0:8]]
+    return [opcode1 + const.double_registers[line.arg1] + opcode2, data[8:16], data[0:8]]
 
 
 def opcode_sss(opcode: str, line: Line):
@@ -107,14 +107,14 @@ def opcode_sss(opcode: str, line: Line):
         raise SyntaxError(
             f'Syntax Error: Invalid syntax at line {line.line} -> "{line.raw_line.strip()}"')
 
-    if line.arg1 not in constants.registers:
+    if line.arg1 not in const.registers:
         raise SyntaxError(
             f'Syntax Error: Invalid syntax at line {line.line} -> "{line.raw_line.strip()}"')
-    return [opcode + constants.registers[line.arg1]]
+    return [opcode + const.registers[line.arg1]]
 
 
 def db_translater(line: Line):
-    args = [decimalToBinary(verifyNumber(num, line)).zfill(8)
+    args = [nh.decimalToBinary(nh.verifyNumber(num, line)).zfill(8)
             for num in line.arg1.split(',')]
     values = []
     for arg in args:
@@ -126,7 +126,7 @@ def db_translater(line: Line):
 
 
 def ds_translater(line: Line):
-    return ['00000000' for it in range(verifyNumber(line.arg1, line))]
+    return ['00000000' for it in range(nh.verifyNumber(line.arg1, line))]
 
 
 translaterDict = {

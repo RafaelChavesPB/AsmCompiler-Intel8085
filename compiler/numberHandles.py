@@ -1,6 +1,6 @@
 import re
-from constants import *
-from line import Line
+from .constants import *
+from .line import Line
 
 
 def isHex(num: str) -> str:
