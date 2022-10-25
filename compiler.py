@@ -33,7 +33,8 @@ class Compiler:
                             Line(**match.groupdict(), line=index, raw_line=line))
                         break
                 else:
-                    raise SyntaxError(f'Syntax Error: Invalid syntax at line {index} -> "{line.strip()}"')
+                    raise SyntaxError(
+                        f'Syntax Error: Invalid syntax at line {index} -> "{line.strip()}"')
 
     def identifyLabels(self):
         curr_address = 0
@@ -45,7 +46,7 @@ class Compiler:
             line.address = curr_address
             if line.label and line.label in self.labels:
                 raise SyntaxError(
-                            f'Syntax Error: Redefing label at line {line.line} -> "{line.raw_line.strip()}"')
+                    f'Syntax Error: Redefing label at line {line.line} -> "{line.raw_line.strip()}"')
             if line.cmd:
                 if line.cmd in constants.commands:
                     if line.label:

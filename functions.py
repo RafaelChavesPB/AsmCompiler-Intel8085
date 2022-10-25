@@ -101,5 +101,6 @@ def verifyNumber(num: str, line: Line):
     elif isBinary(num) is not None:
         data = binaryToDecimal(isBinary(num))
     else:
-        raise SyntaxError(f'Syntax Error: Number not valid at line {line.line} -> {line.raw_line.strip()}')
+        raise SyntaxError(
+            f'Syntax Error: Number not valid at line {line.line} -> {line.raw_line.strip()}')
     return data
