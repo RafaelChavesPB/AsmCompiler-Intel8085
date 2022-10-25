@@ -1,5 +1,6 @@
 import re
 from constants import *
+from line import Line
 
 
 def isHex(num: str) -> str:
@@ -89,7 +90,7 @@ def hexToBinary(num: str) -> str:
     return binary
 
 
-def verifyNumber(num: str, line: int):
+def verifyNumber(num: str, line: Line):
     data = ''
     if isDecimal(num) is not None:
         data = isDecimal(num)
@@ -100,5 +101,5 @@ def verifyNumber(num: str, line: int):
     elif isBinary(num) is not None:
         data = binaryToDecimal(isBinary(num))
     else:
-        raise SyntaxError(f'Number not valid at line {line} -> {num}')
+        raise SyntaxError(f'Syntax Error: Number not valid at line {line.line} -> {line.raw_line.strip()}')
     return data

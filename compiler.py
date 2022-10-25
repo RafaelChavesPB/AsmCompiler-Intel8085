@@ -8,7 +8,7 @@ import constants
 
 # TO DO
 '''
-    Aplicar zfill dentro da função decimalToBinary
+   ORG
 '''
 
 
@@ -33,12 +33,19 @@ class Compiler:
                             Line(**match.groupdict(), line=index, raw_line=line))
                         break
                 else:
-                    raise SyntaxError(f'Invalid syntax at line {index}.')
+                    raise SyntaxError(f'Syntax Error: Invalid syntax at line {index} -> "{line.strip()}"')
 
     def identifyLabels(self):
         curr_address = 0
         for line in self.lines:
+            if curr_address >= 256*256:
+                raise MemoryError(
+                    f'Memory Error: Segmentation fault (core dumped), inadequated memory address ({decimalToHex(curr_address)}) assigned to line {line.line} -> "{line.raw_line.strip()}"')
+
             line.address = curr_address
+            if line.label and line.label in self.labels:
+                raise SyntaxError(
+                            f'Syntax Error: Redefing label at line {line.line} -> "{line.raw_line.strip()}"')
             if line.cmd:
                 if line.cmd in constants.commands:
                     if line.label:
@@ -49,29 +56,29 @@ class Compiler:
                     curr_address += len(line.arg1.split(','))
                 elif line.cmd == 'ds':
                     self.labels[line.label] = curr_address
-                    curr_address += verifyNumber(line.arg1, line.line)
+                    if line.arg1 in self.equ:
+                        line.arg1 = self.equ[line.arg1]
+                    curr_address += verifyNumber(line.arg1, line)
                 elif line.cmd == 'equ':
                     if line.label in constants.commands or line.label in constants.directives or line.label in constants.registers:
                         raise SyntaxError(
-                            f'Label using protect words at line {line.line}')
+                            f'Syntax Error: Using protect words as labels at line {line.line} -> "{line.raw_line.strip()}"')
                     self.equ[line.label] = line.arg1
                 elif line.cmd == 'org':
-                    curr_address = verifyNumber(line.arg1, line.line)
                     line.address = curr_address
                     if line.label:
                         self.labels[line.label] = curr_address
-                        curr_address += 1
+                    curr_address = verifyNumber(line.arg1, line)
+                    if curr_address >= 256*256:
+                        raise MemoryError(
+                            f'Memory Error: Segmentation fault (core dumped), inadequated memory address ({decimalToHex(curr_address)}) assigned at line {line.line} -> "{line.raw_line.strip()}"')
                 else:
                     raise SyntaxError(
-                        f'Invalid command at line {line.line}')
+                        f'Syntax Error: Invalid command at line {line.line}')
             else:
                 if line.label:
                     self.labels[line.label] = curr_address
                     curr_address += 1
-
-            if curr_address >= 256*256:
-                raise MemoryError(
-                    f'Segmentation fault (core dumped)! Accessing inadequated memory position at line {line.line}.')
 
     def replacingLabels(self):
         for line in self.lines:
@@ -108,14 +115,16 @@ class Compiler:
 
         for it in range(top_address):
             if it not in self.binary_code:
-                self.binary_code[it] = ['00000000', 'None']
+                self.binary_code[it] = ['00000000', None]
 
     def saveBinaryCode(self):
         with open(self.filename+'.txt', 'w') as file:
-            file.write(f'{"Memory":10} {"Opcode":10} {"Line":6}  {"Instruction Souce":30} \n')
+            file.write(
+                f'{"Memory":10} {"Opcode":10} {"Line":6}  {"Instruction Souce":30} \n')
             for it in range(len(self.binary_code)):
-                file.write(
-                    f'{decimalToHex(it):10} {self.binary_code[it][0]:10} {self.binary_code[it][1].line:4}    {self.binary_code[it][1].raw_line:30}\n')
+                if self.binary_code[it][1] is not None:
+                    file.write(
+                        f'{decimalToHex(it):10} {self.binary_code[it][0]:10} {self.binary_code[it][1].line:4}    {self.binary_code[it][1].raw_line:30}\n')
         with open(self.filename+'.bin', 'w') as file:
             for it in range(len(self.binary_code)):
                 file.write(self.binary_code[it][0]+'\n')

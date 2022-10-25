@@ -1,7 +1,8 @@
 JMP START
-VALOR:     DB 10
-NBITS:    DB 0
-START:     LDA VALOR    
+VALOR: org 000h
+valor_12: DB 10
+NBITS: DB 0
+START: LDA VALOR    
         MOV B,A        
         MVI C,0        
         MVI D,1    

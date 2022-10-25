@@ -5,109 +5,109 @@ import constants
 
 def opcode_(opcode: str, line: Line):
     if line.arg1 is not None:
-        raise SyntaxError(f'Invalid syntax at line {line.line}.')
+        raise SyntaxError(f'Syntax Error: Invalid syntax at line {line.line} -> "{line.raw_line.strip()}"')
     return [opcode]
 
 
 def opcode_data(opcode: str, line: Line):
     if line.arg2 is not None:
-        raise SyntaxError(f'Invalid syntax at line {line.line}.')
+        raise SyntaxError(f'Syntax Error: Invalid syntax at line {line.line} -> "{line.raw_line.strip()}"')
 
-    data = decimalToBinary(verifyNumber(line.arg1, line.line)).zfill(8)
+    data = decimalToBinary(verifyNumber(line.arg1, line)).zfill(8)
     if len(data) > 8:
-        raise OverflowError(f'Overflow number at line {line.line}')
+        raise SyntaxError(f'Syntax Error: Overflow number at line {line.line} -> "{line.raw_line.strip()}')
     return [opcode, data]
 
 
 def opcode_ddd(opcode1: str, opcode2: str, line: Line):
     if line.arg2 is not None:
-        raise SyntaxError(f'Invalid syntax at line {line.line}.')
+        raise SyntaxError(f'Syntax Error: Invalid syntax at line {line.line} -> "{line.raw_line.strip()}"')
 
     if line.arg1 not in constants.registers:
-        raise SyntaxError(f'Invalid syntax at line {line.line}.')
+        raise SyntaxError(f'Syntax Error: Invalid syntax at line {line.line} -> "{line.raw_line.strip()}"')
     return [opcode1 + constants.registers[line.arg1] + opcode2]
 
 
 def opcode_ddd_data(opcode1: str, opcode2: str, line: Line):
-    data = decimalToBinary(verifyNumber(line.arg2, line.line)).zfill(8)
+    data = decimalToBinary(verifyNumber(line.arg2, line)).zfill(8)
     if len(data) > 8:
-        raise OverflowError(f'Overflow number at line {line.line}')
+        raise SyntaxError(f'Syntax Error: Overflow number at line {line.line} -> "{line.raw_line.strip()}')
 
     if line.arg1 not in constants.registers:
-        raise SyntaxError(f'Invalid syntax at line {line.line}.')
+        raise SyntaxError(f'Syntax Error: Invalid syntax at line {line.line} -> "{line.raw_line.strip()}"')
     return [opcode1 + constants.registers[line.arg1] + opcode2, data]
 
 
 def opcode_ddd_sss(opcode1: str, line: Line):
     if line.arg1 not in constants.registers or line.arg2 not in constants.registers:
-        raise SyntaxError(f'Invalid syntax at line {line.line}.')
+        raise SyntaxError(f'Syntax Error: Invalid syntax at line {line.line} -> "{line.raw_line.strip()}"')
     return [opcode1 + constants.registers[line.arg1] + constants.registers[line.arg2]]
 
 
 def opcode_double_data(opcode: str, line: Line):
     if line.arg2 is not None:
-        raise SyntaxError(f'Invalid syntax at line {line.line}.')
+        raise SyntaxError(f'Syntax Error: Invalid syntax at line {line.line} -> "{line.raw_line.strip()}"')
 
-    data = decimalToBinary(verifyNumber(line.arg1, line.line)).zfill(16)
+    data = decimalToBinary(verifyNumber(line.arg1, line)).zfill(16)
     if len(data) > 16:
-        raise OverflowError(f'Overflow number at line {line.line}')
+        raise SyntaxError(f'Syntax Error: Overflow number at line {line.line} -> "{line.raw_line.strip()}')
     return [opcode, data[8:16], data[0:8]]
 
 
 def opcode_r(opcode1: str, opcode2: str, line: Line):
     if line.arg2 is not None:
-        raise SyntaxError(f'Invalid syntax at line {line.line}.')
+        raise SyntaxError(f'Syntax Error: Invalid syntax at line {line.line} -> "{line.raw_line.strip()}"')
 
     if line.arg1 not in {'b', 'd'}:
-        raise SyntaxError(f'Invalid syntax at line {line.line}.')
+        raise SyntaxError(f'Syntax Error: Invalid syntax at line {line.line} -> "{line.raw_line.strip()}"')
 
     return [opcode1 + ('0' if line.arg1 == 'b' else '1') + opcode2]
 
 
 def opcode_rp(opcode1: str, opcode2: str, line: Line):
     if line.arg2 is not None:
-        raise SyntaxError(f'Invalid syntax at line {line.line}.')
+        raise SyntaxError(f'Syntax Error: Invalid syntax at line {line.line} -> "{line.raw_line.strip()}"')
 
     if line.arg1 not in constants.double_registers:
-        raise SyntaxError(f'Invalid syntax at line {line.line}.')
+        raise SyntaxError(f'Syntax Error: Invalid syntax at line {line.line} -> "{line.raw_line.strip()}"')
 
     return [opcode1 + constants.double_registers[line.arg1] + opcode2]
 
 
 def opcode_rp_double_data(opcode1: str, opcode2: str, line: Line):
 
-    data = decimalToBinary(verifyNumber(line.arg2, line.line)).zfill(16)
+    data = decimalToBinary(verifyNumber(line.arg2, line)).zfill(16)
     if len(data) > 16:
-        raise OverflowError(f'Overflow number at line {line.line}')
+        raise SyntaxError(f'Syntax Error: Overflow number at line {line.line} -> "{line.raw_line.strip()}')
 
     if line.arg1 not in constants.double_registers:
-        raise SyntaxError(f'Invalid syntax at line {line.line}.')
+        raise SyntaxError(f'Syntax Error: Invalid syntax at line {line.line} -> "{line.raw_line.strip()}"')
 
     return [opcode1 + constants.double_registers[line.arg1] + opcode2, data[8:16], data[0:8]]
 
 
 def opcode_sss(opcode: str, line: Line):
     if line.arg2 is not None:
-        raise SyntaxError(f'Invalid syntax at line {line.line}.')
+        raise SyntaxError(f'Syntax Error: Invalid syntax at line {line.line} -> "{line.raw_line.strip()}"')
 
     if line.arg1 not in constants.registers:
-        raise SyntaxError(f'Invalid syntax at line {line.line}.')
+        raise SyntaxError(f'Syntax Error: Invalid syntax at line {line.line} -> "{line.raw_line.strip()}"')
     return [opcode + constants.registers[line.arg1]]
 
 
 def db_translater(line: Line):
-    args = [decimalToBinary(verifyNumber(num, line.line)).zfill(8)
+    args = [decimalToBinary(verifyNumber(num, line)).zfill(8)
             for num in line.arg1.split(',')]
     values = []
     for arg in args:
         if len(arg) > 8:
-            raise OverflowError(f'Overflow number at line {line.line}')
+            raise SyntaxError(f'Syntax Error: Overflow number at line {line.line} -> "{line.raw_line.strip()}')
         values.append(arg)
     return values
 
 
 def ds_translater(line: Line):
-    return ['00000000' for it in range(verifyNumber(line.arg1, line.line))]
+    return ['00000000' for it in range(verifyNumber(line.arg1, line))]
 
 
 translater = {
